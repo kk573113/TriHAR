@@ -72,7 +72,7 @@ class TempPointConv(BaseModel):
         else:
             self.batchnormclass = nn.BatchNorm1d
 
-        # Diagnosis Encoder (사용 안 할 경우 무시)
+        # Diagnosis Encoder 
         self.diagnosis_encoder = nn.Linear(in_features=self.D, out_features=self.diagnosis_size)
         if self.batchnorm in ['mybatchnorm', 'pointonly', 'low_momentum', 'default']:
             self.bn_diagnosis_encoder = self.batchnormclass(num_features=self.diagnosis_size, momentum=self.momentum)
@@ -82,15 +82,13 @@ class TempPointConv(BaseModel):
         # Init Layers
         self.init_tpc()
 
-        # [NEW] Multi-Stage Heads
-        # TPC의 각 Stage 출력 차원은 point_size에 의해 결정됨
+
         head_dim = self.point_sizes[0]
         self.h1 = HeadBlock(head_dim, 32, num_classes)
         self.h2 = HeadBlock(head_dim, 32, num_classes)
         self.h3 = HeadBlock(head_dim, 32, num_classes)
         
         # Layer Groups for Freezing (Simplification)
-        # self.layers_groups = ... (복잡하므로 생략하거나 필요시 추가)
 
     def init_tpc(self):
         self.layers = []
