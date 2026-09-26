@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch import Tensor
-import torchvision.models as tv_models  # <- 임포트 추가
+import torchvision.models as tv_models  
 
 from heads import HeadBlock, BaseModel 
 
@@ -42,19 +42,16 @@ class CXR_ResNet18(BaseModel):
 
     def forward(self, x):
         x = self.stem(x)
-        x1 = self.layer1(x)  # x1 (64 채널)은 다음 레이어로 전달하는 용도로만 사용
+        x1 = self.layer1(x)  
 
-        # Mid-low level: layer2의 결과물 활용
         x2 = self.layer2(x1)
         f1 = x2.flatten(2)   # (B, 128, H*W)
         f_seq1, f_pool1, z1 = self.h1(f1)
 
-        # Mid-high level: layer3의 결과물 활용
         x3 = self.layer3(x2)
         f2 = x3.flatten(2)   # (B, 256, H*W)
         f_seq2, f_pool2, z2 = self.h2(f2)
 
-        # High level: layer4의 결과물 활용
         x4 = self.layer4(x3)
         f3 = x4.flatten(2)   # (B, 512, H*W)
         f_seq3, f_pool3, z3 = self.h3(f3)
