@@ -25,9 +25,7 @@ class HeadBlock(nn.Module):
         return feat_seq, feat_pool, logits
 
 class BaseModel(nn.Module):
-    """
-    모델의 일부 레이어를 동결(Freeze)하는 유틸리티 메서드를 포함한 베이스 클래스
-    """
+
     def _freeze_modules(self, modules):
         for m in modules:
             for p in m.parameters():
