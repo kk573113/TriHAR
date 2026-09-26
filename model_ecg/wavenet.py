@@ -49,13 +49,13 @@ class WaveNetBlock(nn.Module):
 class WaveNet(BaseModel):
     def __init__(
         self, 
-        input_channels=12,      # ECG Lead 수
-        residual_channels=32,   # Residual Block 내부 채널 수
-        gate_channels=32,       # Gated Activation 채널 수
-        skip_channels=64,       # Skip Connection 채널 수
-        num_classes=2,          # 3-Class Output
-        num_blocks=3,           # Dilation Cycle 반복 횟수 (3 Cycle)
-        num_layers=4,           # Cycle당 Layer 수 (예: 4라면 1, 2, 4, 8)
+        input_channels=12,      
+        residual_channels=32,   
+        gate_channels=32,       
+        skip_channels=64,       
+        num_classes=2,          
+        num_blocks=3,           
+        num_layers=4,           
         kernel_size=3
     ):
         super(WaveNet, self).__init__()
@@ -74,8 +74,7 @@ class WaveNet(BaseModel):
             return blocks
 
         # Divide blocks into 3 Stages
-        # num_blocks(Cycle)를 3등분
-        # 예: num_blocks=3이면 각 Stage당 1 Cycle
+
         n_stage1 = num_blocks // 3
         n_stage2 = num_blocks // 3
         n_stage3 = num_blocks - n_stage1 - n_stage2
@@ -84,9 +83,6 @@ class WaveNet(BaseModel):
         self.stage2_blocks = make_stage_blocks(n_stage1, n_stage2)
         self.stage3_blocks = make_stage_blocks(n_stage1 + n_stage2, n_stage3)
 
-        # Heads for each stage
-        # WaveNet의 Skip connection 합은 (B, skip_channels, L) 형태이므로
-        # HeadBlock은 in_dim=skip_channels를 받음
         self.h1 = HeadBlock(skip_channels, 64, num_classes)
         self.h2 = HeadBlock(skip_channels, 64, num_classes)
         self.h3 = HeadBlock(skip_channels, 64, num_classes)
@@ -99,18 +95,14 @@ class WaveNet(BaseModel):
         ]
 
     def process_stage(self, x, blocks, prev_skip_sum=None):
-        """
-        한 Stage의 Block들을 통과하며 Residual과 Skip connection을 처리
-        """
+
         current_skips = []
         for block in blocks:
             x, skip = block(x)
             current_skips.append(skip)
         
-        # 현재 Stage의 Skip 합
         stage_skip_sum = sum(current_skips)
         
-        # 이전 Stage까지의 Skip 합과 누적 (WaveNet은 전체 Skip 합을 사용하므로)
         if prev_skip_sum is not None:
             total_skip_sum = prev_skip_sum + stage_skip_sum
         else:
@@ -124,7 +116,6 @@ class WaveNet(BaseModel):
         
         # --- Stage 1 ---
         x, skip_sum1 = self.process_stage(x, self.stage1_blocks, prev_skip_sum=None)
-        # Skip connection의 합을 Head에 통과시켜 예측
         # Skip Sum: (B, skip_channels, L)
         f_seq1, f_pool1, z1 = self.h1(skip_sum1)
         
