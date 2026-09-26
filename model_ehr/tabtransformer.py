@@ -70,7 +70,7 @@ class TabTransformer(BaseModel): # [수정] BaseModel 상속
         depth,              
         heads,              
         dim_head = 16,
-        num_classes = 2,    # [수정] 3-Class Classification
+        num_classes = 2,    
         attn_dropout = 0.,
         ff_dropout = 0.,
         use_shared_categ_embed = True,
@@ -99,7 +99,7 @@ class TabTransformer(BaseModel): # [수정] BaseModel 상속
         if self.num_continuous > 0:
             self.norm = nn.LayerNorm(num_continuous)
 
-        # 3. Transformer Layers (List로 관리하여 Stage 제어)
+        # 3. Transformer Layers 
         self.layers = nn.ModuleList([])
         for _ in range(depth):
             self.layers.append(nn.ModuleList([
@@ -116,7 +116,6 @@ class TabTransformer(BaseModel): # [수정] BaseModel 상속
         self.h3 = HeadBlock(input_size, 32, num_classes)
         
         # Layer Groups for freezing
-        # Stage별로 Layer를 묶어서 관리 (간소화)
         stage_step = depth // 3
         self.layers_groups = [
             self.layers[:stage_step],
@@ -177,8 +176,7 @@ class TabTransformer(BaseModel): # [수정] BaseModel 상속
                     elif i == self.depth - 1:
                         f_seq3, f_pool3, z3 = self.h3(combined_feat)
         else:
-            # 범주형 변수가 없을 경우 (Continuous Only) -> 바로 MLP 통과와 동일
-            # 이 경우 모든 Stage가 동일한 입력을 받음
+
             combined_feat = normed_cont
             f_seq1, f_pool1, z1 = self.h1(combined_feat)
             f_seq2, f_pool2, z2 = self.h2(combined_feat)
