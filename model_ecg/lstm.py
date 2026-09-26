@@ -5,15 +5,14 @@ from heads import HeadBlock, BaseModel
 class ECG_LSTM(BaseModel):
     def __init__(
         self, 
-        input_channels=12,   # ECG Lead 수
-        hidden_size=128,     # LSTM 은닉층 크기
-        num_classes=2,       # 출력 클래스 (3-Class LOS)
-        dropout=0.2,         # 드롭아웃 비율
-        bidirectional=True   # 양방향 LSTM 사용 여부
+        input_channels=12,   
+        hidden_size=128,     
+        num_classes=2,       
+        dropout=0.2,         
+        bidirectional=True   
     ):
         super(ECG_LSTM, self).__init__()
         
-        # LSTM의 출력 차원 계산 (양방향이면 2배)
         self.feat_dim = hidden_size * 2 if bidirectional else hidden_size
         
         # --- Stage 1 ---
@@ -24,13 +23,12 @@ class ECG_LSTM(BaseModel):
             batch_first=True,
             bidirectional=bidirectional
         )
-        # HeadBlock은 (Batch, Channel, Length) 입력을 받으므로 변환 필요
         self.h1 = HeadBlock(self.feat_dim, 64, num_classes)
 
         # --- Stage 2 ---
         # Input: (Batch, Length, feat_dim) -> Output: (Batch, Length, feat_dim)
         self.lstm2 = nn.LSTM(
-            input_size=self.feat_dim, # 이전 층의 출력을 입력으로 받음
+            input_size=self.feat_dim, 
             hidden_size=hidden_size,
             batch_first=True,
             dropout=dropout,
