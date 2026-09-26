@@ -5,7 +5,7 @@ import numpy as np
 from heads import HeadBlock, BaseModel
 
 # =========================================================================
-# Helper Layers (Sparsemax, GBN, GLU, Transformers) - 그대로 유지
+# Helper Layers (Sparsemax, GBN, GLU, Transformers) 
 # =========================================================================
 
 class Sparsemax(nn.Module):
@@ -110,18 +110,15 @@ class AttentiveTransformer(nn.Module):
         x = self.selector(x)
         return x
 
-# =========================================================================
-# [수정 2] Main TabNet Class (Multi-Stage Output Adapted)
-# =========================================================================
 
-class TabNet(BaseModel): # [수정] BaseModel 상속
+class TabNet(BaseModel): 
     def __init__(
         self,
         input_dim,
-        num_classes=2,  # [수정] Output Dim -> num_classes
+        num_classes=2,  
         n_d=8,
         n_a=8,
-        n_steps=3,      # [중요] 3-Stage 출력을 위해 n_steps=3 권장
+        n_steps=3,      
         gamma=1.3,
         cat_idxs=[],
         cat_dims=[],
@@ -175,8 +172,6 @@ class TabNet(BaseModel): # [수정] BaseModel 상속
             )
             self.att_transformers.append(attentive)
 
-        # [수정] 3-Stage Heads
-        # TabNet의 Feature Dimension은 n_d임
         self.h1 = HeadBlock(n_d, 32, num_classes)
         self.h2 = HeadBlock(n_d, 32, num_classes)
         self.h3 = HeadBlock(n_d, 32, num_classes)
@@ -228,8 +223,7 @@ class TabNet(BaseModel): # [수정] BaseModel 상속
             current_decision = torch.relu(att[:, :self.n_d])
             res = torch.add(res, current_decision)
             
-            # [수정] 각 Step의 누적 결과(res)를 Head에 통과시켜 출력
-            # TabNet은 n_steps=3일 때 3개의 출력을 생성
+  
             
             if step == 0:
                 f_seq1, f_pool1, z1 = self.h1(res)
