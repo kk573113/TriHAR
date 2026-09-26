@@ -3,7 +3,7 @@ import torch.nn.functional as F
 from heads import HeadBlock, BaseModel
 
 class Tabular_Baseline(BaseModel):
-    def __init__(self, in_dim, num_classes=2):  # [수정] N_CLASSES 제거 -> num_classes 인자 추가
+    def __init__(self, in_dim, num_classes=2):  
         super().__init__()
         
         # Layer 1
@@ -35,7 +35,6 @@ class Tabular_Baseline(BaseModel):
         
         # Block 1
         x1 = F.relu(self.d1(x))
-        # HeadBlock은 2D 입력이 들어오면 내부적으로 처리(unsqueeze)하도록 heads.py에 구현되어 있음
         f_seq1, f_pool1, z1 = self.h1(x1) 
         
         # Block 2
