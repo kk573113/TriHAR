@@ -223,7 +223,7 @@ class EHRAnchorAttentionMoE(nn.Module):
         }
 
 
-class TrimodalLeMoFMoE(nn.Module):
+class TrimodalMoE(nn.Module):
     def __init__(
         self,
         ecg_encoder,
