@@ -30,12 +30,12 @@ GUMBEL_TAU_LIST = [0.3, 0.5, 0.7, 1.0, 1.5]
 GATE_KL_WEIGHT_LIST = [0.0, 1e-4, 1e-3, 1e-2]
 LABEL_SMOOTHING = 0.05
 
-ECG_BASE = r"/home/cbnu/Public/bio/dataset/mimic-iv-ecg-diagnostic"
-CXR_BASE = r"/home/cbnu/Public/bio/dataset/cxr/mimic-cxr-jpg/2.1.0"
-ECG_CSV_PATH = r"/home/cbnu/Public/bio/dataset/csv/integrated_dataset_with_ecg.csv"
-CXR_CSV_PATH = r"/home/cbnu/Public/bio/dataset/csv/integrated_cxr.csv"
-TRIMODAL_CSV_PATH = r"/home/cbnu/Public/bio/dataset/AAAI-27/holistic_ehr_ecg_cxr_frontal.csv"
-OUT_DIR = r"/home/cbnu/Public/bio/KSA/result/los_trimodal/[260731]LeMoF_MoE_GateKL_GumbelTau_Grid_vgg"
+ECG_BASE = r"/home/dataset/mimic-iv-ecg-diagnostic"
+CXR_BASE = r"/home/dataset/cxr/mimic-cxr-jpg/2.1.0"
+ECG_CSV_PATH = r"/home/dataset/csv/integrated_dataset_with_ecg.csv"
+CXR_CSV_PATH = r"/home/dataset/csv/integrated_cxr.csv"
+TRIMODAL_CSV_PATH = r"/home/dataset/holistic_ehr_ecg_cxr_frontal.csv"
+OUT_DIR = r"/home/result/TriHAR_vgg"
 
 CAT_COLS = ["gender", "ventilation", "vasopressor", "anticoag", "beta1"]
 LEVEL_NAMES = ["low", "mid", "high"]
@@ -43,7 +43,6 @@ MODALITY_NAMES = ["EHR", "ECG", "CXR"]
 
 ECG_MODEL_NAMES = ["WaveNet", "ResNet", "LSTM"]
 TAB_MODEL_NAMES = ["FTTransformer", "TabTransformer", "TPC"]
-#CXR_MODEL_NAMES = ["ResNet", "DenseNet", "VGG"]
-CXR_MODEL_NAMES = ["VGG"]
+CXR_MODEL_NAMES = ["ResNet", "DenseNet", "VGG"]
 
 NUM_WORKERS = 4
