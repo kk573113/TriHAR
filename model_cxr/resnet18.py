@@ -24,10 +24,10 @@ class CXR_ResNet18(BaseModel):
             backbone.relu,
             backbone.maxpool,
         )
-        self.layer1 = backbone.layer1  # 채널: 64
-        self.layer2 = backbone.layer2  # 채널: 128
-        self.layer3 = backbone.layer3  # 채널: 256
-        self.layer4 = backbone.layer4  # 채널: 512
+        self.layer1 = backbone.layer1  
+        self.layer2 = backbone.layer2  
+        self.layer3 = backbone.layer3  
+        self.layer4 = backbone.layer4  
 
         self.h1 = HeadBlock(128, 64, num_classes)
         self.h2 = HeadBlock(256, 64, num_classes)
