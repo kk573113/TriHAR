@@ -58,7 +58,6 @@ class CXR_VGG16(BaseModel):
         # block4: 17 ~ 23
         # block5: 24 ~ 30
         #
-        # 각 block의 마지막 MaxPool까지 포함합니다.
         self.block1 = nn.Sequential(*features[:5])
         self.block2 = nn.Sequential(*features[5:10])
         self.block3 = nn.Sequential(*features[10:17])
@@ -69,7 +68,6 @@ class CXR_VGG16(BaseModel):
         self.h2 = HeadBlock(512, 64, num_classes)
         self.h3 = HeadBlock(512, 64, num_classes)
 
-        # 기존 BaseModel 계열 코드에서 참조할 수 있도록 유지
         self.layers_groups = [
             [self.block1, self.block2, self.block3],
             [self.block4],
