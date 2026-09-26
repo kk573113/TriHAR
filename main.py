@@ -8,7 +8,7 @@ import torch
 
 from config import *
 from dataset import create_repeat_loaders, prepare_data
-from fusion_model import TrimodalLeMoFMoE
+from fusion_model import TrimodalMoE
 from model_builders import build_cxr_model, build_ecg_model, build_tab_model
 from train_utils import predict_all, train_one_model
 from utils import (
