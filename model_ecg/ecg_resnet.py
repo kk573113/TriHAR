@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch import Tensor
-from heads import HeadBlock, BaseModel  # [수정] heads.py에서 임포트
+from heads import HeadBlock, BaseModel  
 
 # ==========================================
 # Activation Functions
@@ -66,7 +66,7 @@ class ResNetBlock1d(nn.Module):
 # ==========================================
 # Main ResNet1d (Multi-Head Adapted)
 # ==========================================
-class ResNet1d(BaseModel):  # [수정] BaseModel 상속
+class ResNet1d(BaseModel):  
     def __init__(
         self,
         *,
@@ -87,7 +87,6 @@ class ResNet1d(BaseModel):  # [수정] BaseModel 상속
         self.first_layer = nn.Conv1d(input_channels, d, kernel_size=kernel_size, padding=kernel_size//2)
 
         # 2. Divide Layers into 3 Groups (Stages)
-        # 예: 8 layers -> [3, 3, 2] 개씩 배분
         d_hidden = int(d * d_hidden_factor)
         
         # Helper to create a list of blocks
