@@ -35,7 +35,7 @@ CXR_BASE = r"/home/dataset/cxr/mimic-cxr-jpg/2.1.0"
 ECG_CSV_PATH = r"/home/dataset/csv/integrated_dataset_with_ecg.csv"
 CXR_CSV_PATH = r"/home/dataset/csv/integrated_cxr.csv"
 TRIMODAL_CSV_PATH = r"/home/dataset/holistic_ehr_ecg_cxr_frontal.csv"
-OUT_DIR = r"/home/result/TriHAR_vgg"
+OUT_DIR = r"/home/result/TriHAR"
 
 CAT_COLS = ["gender", "ventilation", "vasopressor", "anticoag", "beta1"]
 LEVEL_NAMES = ["low", "mid", "high"]
