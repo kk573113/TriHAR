@@ -8,14 +8,11 @@ from config import N_CLASSES
 from heads import BaseModel, HeadBlock
 
 # The user requested the folder name model_ecg. It is used here as the ECG package.
-from model_ecg.ecg_baseline import ECG_Baseline
 from model_ecg.ecg_resnet import ResNet1d
 from model_ecg.wavenet import WaveNet
 from model_ecg.lstm import ECG_LSTM
 
-from model_ehr.tab_baseline import Tabular_Baseline
 from model_ehr.tpc import TempPointConv
-from model_ehr.tabnet import TabNet
 from model_ehr.tabtransformer import TabTransformer
 from model_ehr.fttransformer import FTTransformer
 
@@ -104,8 +101,6 @@ class TPCConfig:
 
 
 def build_ecg_model(ecg_name: str):
-    if ecg_name == "Baseline":
-        return ECG_Baseline(num_classes=N_CLASSES)
     if ecg_name == "ResNet":
         return ResNet1d(input_channels=12, num_classes=N_CLASSES)
     if ecg_name == "WaveNet":
@@ -126,9 +121,6 @@ def build_cxr_model(cxr_name: str):
 
 
 def build_tab_model(tab_name: str, tab_dim: int, num_cnt: int, cat_dims: Tuple[int, ...]):
-    if tab_name == "Baseline":
-        return Tabular_Baseline(in_dim=tab_dim, num_classes=N_CLASSES)
-
     if tab_name == "TPC":
         tpc_layers = 9
         tpc_conf = TPCConfig(
@@ -137,16 +129,7 @@ def build_tab_model(tab_name: str, tab_dim: int, num_cnt: int, cat_dims: Tuple[i
             point_sizes=[64] * tpc_layers,
         )
         return TempPointConv(config=tpc_conf, F=tab_dim, D=0, no_flat_features=0, num_classes=N_CLASSES)
-
-    if tab_name == "TabNet":
-        return TabNet(
-            input_dim=tab_dim,
-            num_classes=N_CLASSES,
-            cat_idxs=list(range(num_cnt, tab_dim)),
-            cat_dims=list(cat_dims),
-            cat_emb_dim=2,
-        )
-
+        
     if tab_name == "TabTransformer":
         return TabTransformer(
             categories=cat_dims,
